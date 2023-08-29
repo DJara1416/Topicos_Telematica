@@ -1,0 +1,36 @@
+Info de la materia: sto263 Topicos especiales en telematica
+Nombre: Daniel Jaramillo Valencia 
+Email: djaramillv@eafit.edu.co
+Profesor: EDWIN NELSON MONTOYA MUNERA 
+Email: emontoya@eafit.brightspace.com
+
+Reto 2
+
+1. Breve descripcion de la actividad
+La actividad consta de realizar una arquitectura para una comunicación de procesos empezando desde un post man pasando a ra ves de un api Gateway y terminando en unos micro servicios, toso esto a través de rpc y amqp utilizando para ello rabbitmq y grpc.
+el API debe recibir el pedido del cliente y dirigirlo a grpc y darle una solución con un microservicio, en caso de que dicho microservicio falle este deberá procesar la petición a través de un mom y dirigirla a otro microservicio pudiendo así completar 
+la petición del cliente y que a través de uno de los dos procesos tenga una respuesta a la petición.
+El api Gateway va a ser utilizado como el comunicador principal con los servidores de los microservicios
+
+1.1
+-
+-
+
+2. Información general de diseño de alto nivel, arquitectura, patrones, mejores prácticas utilizadas.
+-implementacion de arquitectura
+-creacion de instancias
+-asigancion de ip elasticas
+
+
+3.
+se utilizaron lenguajesd de programacion como:
+-python
+-javascript
+librerias usadas
+-pika
+-grpc
+4.
+API GATEWAY     = 34.226.145.243
+RabbitMQ        = 44.195.244.252
+Microservicio 1 = 44.218.218.184
+MIcroservicio 2 = 44.217.227.54
