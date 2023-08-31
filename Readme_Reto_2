@@ -6,31 +6,52 @@ Email: emontoya@eafit.brightspace.com
 
 Reto 2
 
-1. Breve descripcion de la actividad
-La actividad consta de realizar una arquitectura para una comunicación de procesos empezando desde un post man pasando a ra ves de un api Gateway y terminando en unos micro servicios, toso esto a través de rpc y amqp utilizando para ello rabbitmq y grpc.
+1. Breve descripción de la actividad
+La actividad consta de realizar una arquitectura para una comunicación de procesos empezando desde un post man pasando a ra ves de un api Gateway y terminando en unos microservicios, toso esto a través de rpc y amqp utilizando para ello rabbitmq y grpc.
 el API debe recibir el pedido del cliente y dirigirlo a grpc y darle una solución con un microservicio, en caso de que dicho microservicio falle este deberá procesar la petición a través de un mom y dirigirla a otro microservicio pudiendo así completar 
 la petición del cliente y que a través de uno de los dos procesos tenga una respuesta a la petición.
 El api Gateway va a ser utilizado como el comunicador principal con los servidores de los microservicios
 
 1.1
--Se realizao el diseño arquitectonico pedido por el profesor con los microservicios de list y find comunicacndose ambos con el api gateway, comunicandose con un rpc en este caso grpc y con un middleware en este caso rabbitmq
--
+-Se ha realizado el diseño arquitectónico pedido por el profesor con los microservicios de list y find comunicándose ambos con el api gateway, comunicándose con un rpc en este caso grpc y con un middleware en este caso rabbitmq
+- se logró la comunicación de las instancias entre si y el funcionamiento de la arquitectura tal y como se pedía en el documento
+- Hubo un funcionamiento de los procesos de grpc con el microservicio 1 y 2 con la función de list
+-El postman tuvo una comunicación con el api Gateway pudiendo así hacer las solicitudes necesarias para las pruebas además de también poder recibir la información de dichas solicitudes de vuelta
+En general se tuvo una buena funcionalidad de los requerimientos del proyecto a pesar de que ciertas cosas no funcionaron 
+1.2
+-No se logró la implementación del segundo requerimiento del microservicio find
+-No se hizo el tema de las notificaciones cuando entrara la respuesta en el MOM
 
 2. Información general de diseño de alto nivel, arquitectura, patrones, mejores prácticas utilizadas.
--implementacion de arquitectura
--creacion de instancias
--asigancion de ip elasticas
-
-
+- implementación de arquitectura
+- creación de instancias
+- asignación de ip elásticas
+el proyecto está hecho en python , utiliza flask para crear la API , también se usa grpc para la comunicación de servicios en el backend, además de esto se usa amqp para los mensajes ay que se está utilizando el rabbitmq como middleware orientado al tema de mensajería
+practicas
+- se usa un cliente rpc para simular la comunicación sincrónica con el MOM como se muestra en la documentación de rabbitmq
+- separación de la responsabilidad entre los sistemas usados grpc y el MOM con sus respectivas configuraciones y variables de entorno
+- configuración de variables de entorno
 3.
-se utilizaron lenguajesd de programacion como:
+se utilizaron lenguajes de programación como:
 -python
--javascript
-librerias usadas
--pika
--grpc
+
+librerías usadas
+-grpcio: 1.57.0
+-grpcio-tools: 1.57.0
+-protobuf: 4.24.2
+-pika: 1.2.0
+-flask: 2.0.1
+-flask-restful: 0.3.9
+-python-dotenv: 0.17.1
 4.
 API GATEWAY     = 34.226.145.243
 RabbitMQ        = 44.195.244.252
 Microservicio 1 = 44.218.218.184
-MIcroservicio 2 = 44.217.227.54
+Microservicio 2 = 44.217.227.54
+
+Referencias 
+-	https://www.rabbitmq.com/tutorials/tutorial-six-python.html
+-	https://grpc.io/docs/what-is-grpc/introduction/
+-	https://protobuf.dev/getting-started/pythontutorial/
+
+video explicativo reto 2 = https://eafit-my.sharepoint.com/:v:/g/personal/djaramillv_eafit_edu_co/Ebol_RO5hZdCnWvUp_16Rx8BuGh5lJ5ypbd9Cv2OuGr9XA?e=XeKnOA&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZyIsInJlZmVycmFsQXBwUGxhdGZvcm0iOiJXZWIiLCJyZWZlcnJhbE1vZGUiOiJ2aWV3In19
