@@ -2,7 +2,7 @@ syntax = "proto3";
 import "google/protobuf/empty.proto";
 message FileInfo {
     string name = 1;
-    int64 size = 2;
+    
     string timestamp = 3;
 }
 
