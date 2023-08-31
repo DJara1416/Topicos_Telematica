@@ -3,6 +3,15 @@
 # Consume RabbitMQ queue
 
 import pika
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+IP_ELASTICA_RABBITMQ = os.getenv('44.195.244.252')
+USUARIO_RABBITMQ = os.getenv('user')
+PASSWORD_RABBITMQ = os.getenv('password')
+
 connection = pika.BlockingConnection(pika.ConnectionParameters('localhost', 5672, '/', pika.PlainCredentials("user", "password")))
 channel = connection.channel()
 
