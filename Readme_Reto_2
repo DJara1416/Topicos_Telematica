@@ -13,7 +13,7 @@ la petición del cliente y que a través de uno de los dos procesos tenga una re
 El api Gateway va a ser utilizado como el comunicador principal con los servidores de los microservicios
 
 1.1
--
+-Se realizao el diseño arquitectonico pedido por el profesor con los microservicios de list y find comunicacndose ambos con el api gateway, comunicandose con un rpc en este caso grpc y con un middleware en este caso rabbitmq
 -
 
 2. Información general de diseño de alto nivel, arquitectura, patrones, mejores prácticas utilizadas.
