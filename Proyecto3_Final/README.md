@@ -13,7 +13,7 @@ Este proyecto se enfoca en capturar datos en tiempo real de la bolsa de valores 
 - Python 3.x
 - Apache Kafka
 - MongoDB
-- Cuenta de API para datos de la bolsa de valores
+- Cuenta de API para datos de la bolsa de valores [Finhub](https://finnhub.io/)
 - Conocimientos básicos en Python, Kafka y MongoDB
 
 ## Configuración del Entorno
@@ -293,13 +293,8 @@ Este proyecto se enfoca en capturar datos en tiempo real de la bolsa de valores 
       
 ## Visualización de Datos 
 1. **Descripción**:
-    - La visualización de los datos que tendremos en el proyecto sera a traves de Mongo Altlas, lo cual permite ser  más productivos con nuestros datos.
+    - La visualización de los datos que tendremos en el proyecto sera a traves de Mongo Altlas.
 
-## Uso y Mantenimiento
-1. **Ejecutar los Scripts Regularmente**:
-    - Asegurarse de que el script de captura de datos y el script de Python estén ejecutándose continuamente.
-
-2. **Monitoreo y Mantenimiento**:
-    - Monitorear el sistema regularmente para asegurarse de que todo funcione correctamente.
-    - Realizar mantenimiento y actualizaciones según sea necesario.
+## Demo
+[video-sustentacion](https://eafit-my.sharepoint.com/:v:/g/personal/jravel_eafit_edu_co/EawlzyUq7I1AgPlG8qYEcF4BASf2Xyc-QDHiNAmwn4B1DQ)
 
