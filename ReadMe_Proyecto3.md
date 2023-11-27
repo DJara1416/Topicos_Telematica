@@ -1,5 +1,6 @@
 # Proyecto de Procesamiento en Tiempo Real de Datos de la Bolsa
 ## Integrantes
+
 1. Antonio Carmona Gaviria
 2. Kevin Sossa Chavarria
 3. Jacobo Rave Londoño
@@ -157,17 +158,142 @@ Este proyecto se enfoca en capturar datos en tiempo real de la bolsa de valores 
 1. **Script de Captura de Datos de la Bolsa**:
     - Escribir un script en Python que use la API de la bolsa para obtener datos en tiempo real.
     - Publicar los datos capturados en el tema de Kafka creado anteriormente.
+    -Para lo anteriror utlizaremos el siguiente scrip que lo que hace es todo el tema de conexion de la API de la bolsa, otencion y envio de datos 
+    ```py
+    from kafka import KafkaProducer
+    import requests
+    import json
+    import time
+    
+    def obtener_datos_accion(symbol, api_key):
+        url = f"https://finnhub.io/api/v1/quote?symbol={symbol}&token={api_key}"
+        response = requests.get(url)
+        if response.status_code == 200:
+            return json.loads(response.content.decode('utf-8'))
+        else:
+            return None
+    
+    def enviar_datos_kafka(topic, data, producer):
+        producer.send(topic, data)
+        producer.flush()
+        print("Datos enviados a Kafka")
+    
+    def main():
+        # Configuración del productor de Kafka
+        producer = KafkaProducer(bootstrap_servers='127.0.0.1:9092',
+                                 value_serializer=lambda v: json.dumps(v).encode('utf-8'))
+    
+        api_key = "TU_API_KEY" # CAMBIA TU API KEY AQUI
+        symbol = "BINANCE:BTCUSDT"
+    
+        while True:
+            # Obtener datos de la API
+            datos = obtener_datos_accion(symbol, api_key)
+    
+            if datos:
+                # Enviar datos de la acción a Kafka
+                enviar_datos_kafka("topic_bolsa", datos, producer)
+            
+            # Esperar X segundos antes de hacer la siguiente solicitud
+            time.sleep(60)  # Puedes ajustar este intervalo según tus necesidades
+    
+    if __name__ == "__main__":
+        main()
 
+    ```
+    En este script, la función main() ejecuta un bucle infinito que hace una solicitud a la API de Finnhub cada 60 segundos (este intervalo puede ser ajustado según tus necesidades). Los datos obtenidos son enviados a un tema de Kafka.
+   
 ## Procesamiento de Datos con Python para Streaming
 1. **Script de Procesamiento con Python**:
     - Desarrollar un script en Python que lea datos del tema de Kafka.
     - Realizar operaciones de procesamiento o análisis en los datos (por ejemplo, cálculos de promedios móviles).
     - Almacenar los resultados del análisis en MongoDB.
+    - con el siguiente script en python se ahra toda la lectura y procesamiento de los datos ademas de aamacenarlos en la abse de datos, en este caso en MongoDB
 
-## Visualización de Datos
-1. **Configuración de Herramientas de Visualización**:
-    - Instalar y configurar Apache Superset o una herramienta similar.
-    - Conectar la herramienta con MongoDB para visualizar los datos en tiempo real.
+   ```py
+    from confluent_kafka import Consumer, KafkaError
+    import json
+    from pymongo import MongoClient
+    
+    # Conexión a MongoDB
+    def conectar_mongodb(uri="mongodb://localhost:27017"):
+        client = MongoClient(uri)
+        db = client['mi_base_datos']
+        return db['mi_coleccion']
+    
+    # Almacenamiento en MongoDB
+    def almacenar_en_mongodb(coleccion, data):
+        coleccion.insert_one(data)
+    
+    # Crear el consumidor de Kafka
+    def create_consumer(config, topic):
+        consumer = Consumer(config)
+        consumer.subscribe([topic])
+        return consumer
+    
+    # Procesar el mensaje recibido
+    def process_message(msg, coleccion_mongodb):
+        try:
+            record = json.loads(msg.value().decode('utf-8'))
+            print("Mensaje recibido:", record)
+    
+            # Supongamos que queremos calcular el promedio de 'c' (precio de cierre)
+            valor = record['c']
+            almacenar_en_mongodb(coleccion_mongodb, {'precio_cierre': valor})
+    
+        except json.decoder.JSONDecodeError as e:
+            print("Error al decodificar el mensaje:", e)
+    
+    
+    # Consumir mensajes de Kafka
+    def consume_messages(consumer, coleccion_mongodb):
+        try:
+            while True:
+                msg = consumer.poll(timeout=1.0)
+                if msg is None:
+                    continue
+                if msg.error():
+                    if msg.error().code() == KafkaError._PARTITION_EOF:
+                        # Fin de la partición, espera por más mensajes
+                        continue
+                    else:
+                        print(msg.error())
+                        break
+    
+                process_message(msg, coleccion_mongodb)
+    
+        except KeyboardInterrupt:
+            print("Interrumpido por el usuario")
+        finally:
+            consumer.close()
+            print("Consumidor cerrado")
+    
+    
+    def main():
+        kafka_config = {
+            'bootstrap.servers': '127.0.0.1:9092',
+            'group.id': 'mi_grupo',
+            'auto.offset.reset': 'earliest'
+        }
+    
+        topic = 'topic_bolsa'
+        consumer = create_consumer(kafka_config, topic)
+        coleccion_mongodb = conectar_mongodb()
+    
+        consume_messages(consumer, coleccion_mongodb)
+    
+    if __name__ == "__main__":
+        main()
+    ```
+      - Explicación del Script
+        - Conexión a MongoDB: El script se conecta a una base de datos MongoDB y especifica una colección donde se almacenarán los datos.
+        - Consumidor de Kafka: Se crea un consumidor de Kafka que se suscribe a un tema específico.
+        - Procesamiento de Mensajes: Cada mensaje recibido se decodifica de JSON. En este ejemplo, se extrae el valor del precio de cierre ('c') y se almacena en MongoDB.
+        - Bucle Principal: El script entra en un bucle que lee mensajes de Kafka y los procesa continuamente.
+      
+## Visualización de Datos 
+1. **Descripción**:
+    - La visualización de los datos que tendremos en el proyecto sera a traves de Mongo Altlas, lo cual permite ser  más productivos con nuestros datos.
 
 ## Uso y Mantenimiento
 1. **Ejecutar los Scripts Regularmente**:
@@ -177,6 +303,3 @@ Este proyecto se enfoca en capturar datos en tiempo real de la bolsa de valores 
     - Monitorear el sistema regularmente para asegurarse de que todo funcione correctamente.
     - Realizar mantenimiento y actualizaciones según sea necesario.
 
-## Consideraciones Finales
-- Este proyecto es para fines educativos y de desarrollo. Para un entorno de producción, se deben considerar aspectos como la escalabilidad, la gestión de errores y la seguridad.
-- Familiarízate con las limitaciones de la API de la bolsa y asegúrate de cumplir con sus términos de uso.
