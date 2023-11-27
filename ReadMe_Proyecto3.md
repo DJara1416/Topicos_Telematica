@@ -7,14 +7,14 @@
 4. Daniel Jaramillo Valencia 
 
 ## Descripción
-Este proyecto se enfoca en capturar datos en tiempo real de la bolsa de valores utilizando una API gratuita, procesar estos datos utilizando Apache Kafka y Pyhtond Streaming, y almacenar los resultados en MongoDB para su análisis y visualización.
+Este proyecto se enfoca en capturar datos en tiempo real de la bolsa de valores utilizando una API gratuita, procesar estos datos utilizando Apache Kafka y Pyhton Streaming, y almacenar los resultados en MongoDB para su análisis y visualización.
 
 ## Requisitos Previos
 - Python 3.x
 - Apache Kafka
 - MongoDB
 - Cuenta de API para datos de la bolsa de valores
-- Conocimientos básicos en Python, Kafka, Spark y MongoDB
+- Conocimientos básicos en Python, Kafka y MongoDB
 
 ## Configuración del Entorno
 1. **Actualizacion del Sistema y Herramientas Básicas**:
