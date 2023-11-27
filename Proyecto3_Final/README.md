@@ -9,6 +9,13 @@
 ## Descripción
 Este proyecto se enfoca en capturar datos en tiempo real de la bolsa de valores utilizando una API gratuita, procesar estos datos utilizando Apache Kafka y Pyhton Streaming, y almacenar los resultados en MongoDB para su análisis y visualización.
 
+## Arquitectura
+
+![WhatsApp Image 2023-11-26 at 9 02 07 PM](https://github.com/DJara1416/Topicos_Telematica/assets/68928490/1856a4d4-a818-4eb8-85da-61949a201ede)
+
+Se consumira el api de Finnhub para traer data de la bolsa en tiempo real a su vez se empleara Kafka para intermediar esta data enviados entre un producer y un consumer desarrolados en python para despues almacenarlo en mongodb. Para mostrar la data analizada se tomara la data almacenada y se usara MongoAtlas como visualizador de datos.
+
+
 ## Requisitos Previos
 - Python 3.x
 - Apache Kafka
@@ -294,6 +301,12 @@ Este proyecto se enfoca en capturar datos en tiempo real de la bolsa de valores 
 ## Visualización de Datos 
 1. **Descripción**:
     - La visualización de los datos que tendremos en el proyecto sera a traves de Mongo Altlas.
+  
+    ![image](https://github.com/DJara1416/Topicos_Telematica/assets/68928490/5f7ffe84-eb01-4f59-85c5-771f38ab4357)
+    ![image](https://github.com/DJara1416/Topicos_Telematica/assets/68928490/65622a1a-b16f-4667-8084-d2b41b67cfeb)
+
+   Cada barra muestra diferente data respecto a los precios de cierre almacenados
+
 
 ## Demo
 [video-sustentacion](https://eafit-my.sharepoint.com/:v:/g/personal/jravel_eafit_edu_co/EawlzyUq7I1AgPlG8qYEcF4BASf2Xyc-QDHiNAmwn4B1DQ)
